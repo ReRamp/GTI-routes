@@ -38,8 +38,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationRequest locationRequest;
     private Location lastlocation;
     private Marker currentLocationmMarker;
+    private Marker[] routeMarkers;
     public static final int REQUEST_LOCATION_CODE = 99;
     double latitude,longitude;
+    private int n = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +113,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         lastlocation = location;
         if(currentLocationmMarker != null)
         {
+            //routeMarkers[n] =
             currentLocationmMarker.remove();
 
         }
