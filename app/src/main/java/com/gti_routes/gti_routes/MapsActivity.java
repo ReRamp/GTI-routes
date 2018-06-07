@@ -2,9 +2,11 @@ package com.gti_routes.gti_routes;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -28,6 +30,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -38,9 +42,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleApiClient client;
     private LocationRequest locationRequest;
     private Location lastlocation;
+    private LocationListener locationListener;
     private Marker currentLocationmMarker;
     private Marker testmMarker;
-    private Marker[] routeMarkers;
+    private LatLng[] routeCoords = new LatLng[6000];
     public static final int REQUEST_LOCATION_CODE = 99;
     double latitude,longitude;
     private int n = 0;
@@ -97,10 +102,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
         }
-        System.out.print("OnMapReady");
-        if(currentLocationmMarker != null) {
-            dropPin(currentLocationmMarker.getPosition());
-            debugText.setText("lat: "+currentLocationmMarker.getPosition().latitude+"lng: "+currentLocationmMarker.getPosition().longitude);
+        Log.d("aidan", "onMapReady");
+        if(client.isConnected()){
+            Log.d("aidan", "Client is connected");
+            LocationServices.FusedLocationApi.requestLocationUpdates(client, locationRequest, this);
         }
         testMarker();
 
@@ -128,7 +133,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {
-        System.out.printf("onLocationChanged function entered");
+        //Log.v("onLocationChanged function entered");
         latitude = location.getLatitude();
         longitude = location.getLongitude();
         lastlocation = location;
@@ -147,6 +152,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomBy(10));
 
+        if(n>=1) {
+            for(int i = 0; i<n-1; i++){
+                Polyline line = mMap.addPolyline(new PolylineOptions()
+                        .add(routeCoords[i], routeCoords[i+1])
+                        .width(5)
+                        .color(Color.RED));
+            }
+        }
         /*if(client != null)
         {
             LocationServices.getFusedLocationProviderClient()
@@ -162,10 +175,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationRequest.setFastestInterval(1000);
         locationRequest.setPriority(locationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
-        /*if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            //LocationServices.FusedLocationApi.requestLocationUpdates(client,locationRequest,this);
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            LocationServices.FusedLocationApi.requestLocationUpdates(client,locationRequest,this);
             //LocationServices.getFusedLocationProviderClient();
-        }*/
+        }
     }
 
     public boolean checkLocationPermission() {
@@ -194,7 +207,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         markerOptions.visible(true);
 
-        routeMarkers[n] = mMap.addMarker(markerOptions);
+        routeCoords[n] = newPin;
         n++;
     }
     @Override
