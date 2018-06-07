@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -38,6 +39,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationRequest locationRequest;
     private Location lastlocation;
     private Marker currentLocationmMarker;
+    private Marker testmMarker;
     private Marker[] routeMarkers;
     public static final int REQUEST_LOCATION_CODE = 99;
     double latitude,longitude;
@@ -50,6 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        TextView debugText = (TextView) findViewById(R.id.Debug_Output);
     }
 
     @Override
@@ -87,14 +90,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        TextView debugText = (TextView) findViewById(R.id.Debug_Output);
         mMap = googleMap;
         checkLocationPermission();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
         }
-        //onLocationChanged(lastlocation);
+        System.out.print("OnMapReady");
+        if(currentLocationmMarker != null) {
+            dropPin(currentLocationmMarker.getPosition());
+            debugText.setText("lat: "+currentLocationmMarker.getPosition().latitude+"lng: "+currentLocationmMarker.getPosition().longitude);
+        }
+        testMarker();
 
+    }
+
+    private void testMarker() {
+        Marker test;
+        MarkerOptions testOptions = new MarkerOptions();
+        LatLng testCoord = new LatLng(47, 47);
+        testOptions.position(testCoord);
+        //testOptions.title("test");
+        testOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+        testmMarker = mMap.addMarker(testOptions);
     }
 
     protected synchronized void buildGoogleApiClient(){
@@ -109,14 +128,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {
+        System.out.printf("onLocationChanged function entered");
         latitude = location.getLatitude();
         longitude = location.getLongitude();
         lastlocation = location;
         if(currentLocationmMarker != null)
         {
-            routeMarkers[n] = currentLocationmMarker;
+            dropPin(currentLocationmMarker.getPosition());
             currentLocationmMarker.remove();
-            n++;
         }
         Log.d("lat = ",""+latitude);
         LatLng latLng = new LatLng(location.getLatitude() , location.getLongitude());
@@ -168,6 +187,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return true;
     }
 
+    public void dropPin(LatLng newPin){
+        MarkerOptions markerOptions = new MarkerOptions();
+        //LatLng newPin = new LatLng(location.getLatitude(), location.getLongitude());
+        markerOptions.position(newPin);
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        markerOptions.visible(true);
+
+        routeMarkers[n] = mMap.addMarker(markerOptions);
+        n++;
+    }
     @Override
     public void onConnectionSuspended(int i) {
 
