@@ -14,6 +14,8 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +51,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static final int REQUEST_LOCATION_CODE = 99;
     double latitude,longitude;
     private int n = 0;
+    private boolean recording = false;
+    public Button button = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +61,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        button = findViewById(R.id.button_start_record);
+        button.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                if(recording){
+                    recording = false;
+                    button.setText(R.string.startRecording);
+                }else if(!recording){
+                    recording = true;
+                    button.setText(R.string.stopRecording);
+                }
+            }
+        });
     }
+
+    public void onClickBtn(){
+        if(recording){
+            recording = false;
+            button.setText(R.string.startRecording);
+        }else if(!recording){
+            recording = true;
+            button.setText(R.string.startRecording);
+        }
+    }
+    
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

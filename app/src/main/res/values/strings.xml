@@ -2,4 +2,6 @@
     <string name="app_name">GTI-routes</string>
     <string name="title_activity_maps">Map</string>
     <string name="debug_text">debug</string>
+    <string name="startRecording">Start Recording</string>
+    <string name="stopRecording">Stop Recording</string>
 </resources>

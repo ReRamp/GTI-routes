@@ -1,38 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/gridView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:columnWidth="90dp"
-    android:numColumns="2"
     android:verticalSpacing="10dp"
-    android:horizontalSpacing="10dp"
     android:stretchMode="columnWidth"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@drawable/plad"
+    android:padding="30dp">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="-GTI Routes-"
         android:textAlignment="center"
-        android:textColor="#000000"
-        android:textSize="30dp" />
+        android:textColor="#FFF"
+        android:textSize="30dp"
+        tools:text="FF0000"
+    />
 
     <Button
         android:id="@+id/button_start_record"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="Start Recording" />
-
-    <Button
-        android:id="@+id/button_stop_record"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="3"
-        android:layout_row="2"
-        android:text="Stop Recording" />
+        android:layout_width="match_parent"
+        android:text="Something Wierd"
+        android:onClick="onClickBtn"/>
 
     <fragment
         android:id="@+id/map"
@@ -41,7 +35,8 @@
         android:layout_height="wrap_content"
         tools:context=".MapsActivity" />
 
-</GridLayout>
+
+</LinearLayout>
 
 
     <!--https://developers.google.com/maps/documentation/javascript/examples/polyline-simple-->
