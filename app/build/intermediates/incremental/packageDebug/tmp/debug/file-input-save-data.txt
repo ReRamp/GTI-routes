@@ -1,10 +1,10 @@
 #Internal package file, do not edit.
-#Tue Jun 12 18:52:16 PDT 2018
-1.base=C\:\\GitHub\\GTI-routes\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\113
+#Wed Jun 13 00:08:22 PDT 2018
+1.base=C\:\\GitHub\\GTI-routes\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\13
 2.path=classes.dex
 0.baseType=DIRECTORY
 3.baseType=DIRECTORY
-2.base=C\:\\GitHub\\GTI-routes\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\116
+2.base=C\:\\GitHub\\GTI-routes\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\12
 3.set=DEX
 2.set=DEX
 1.baseType=DIRECTORY
@@ -12,8 +12,8 @@
 count=4
 1.set=DEX
 0.path=classes.dex
-3.base=C\:\\GitHub\\GTI-routes\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\114
+3.base=C\:\\GitHub\\GTI-routes\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\14
 0.set=DEX
-0.base=C\:\\GitHub\\GTI-routes\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\115
+0.base=C\:\\GitHub\\GTI-routes\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\11
 2.baseType=DIRECTORY
 1.path=classes.dex

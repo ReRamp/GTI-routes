@@ -5,24 +5,24 @@
     build-mode="COLD"
     density="420dpi"
     format="10"
-    ir-eligibility="METHOD_ADDED"
+    ir-eligibility="COMPATIBLE"
     plugin-version="3.1.2"
-    timestamp="1528859555952"
+    timestamp="1528877492568"
     token="-5951577971784060377"
     verifier="COLD_SWAP_REQUESTED" >
 
     <task
         name="javac"
-        duration="1200" />
+        duration="1118" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="78" />
+        duration="37" />
     <task
         name="verifier"
-        duration="40" />
+        duration="11" />
 
     <artifact
         location="C:\GitHub\GTI-routes\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
@@ -30,8 +30,11 @@
 
     <build
         build-mode="FULL"
-        timestamp="1528859042004"
+        timestamp="1528874608373"
         verifier="FULL_BUILD_REQUESTED" >
+        <artifact
+            location="C:\GitHub\GTI-routes\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
+            type="SPLIT" />
         <artifact
             location="C:\GitHub\GTI-routes\app\build\intermediates\split-apk\debug\slices\slice_3.apk"
             type="SPLIT" />
@@ -63,9 +66,6 @@
             location="C:\GitHub\GTI-routes\app\build\intermediates\split-apk\debug\slices\slice_0.apk"
             type="SPLIT" />
         <artifact
-            location="C:\GitHub\GTI-routes\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
-            type="SPLIT" />
-        <artifact
             location="C:\GitHub\GTI-routes\app\build\intermediates\resources\instant-run\debug\resources-debug.apk"
             type="SPLIT" />
         <artifact
@@ -74,8 +74,8 @@
     </build>
     <build
         build-mode="COLD"
-        ir-eligibility="METHOD_ADDED"
-        timestamp="1528859555952"
+        ir-eligibility="COMPATIBLE"
+        timestamp="1528877492568"
         verifier="COLD_SWAP_REQUESTED" >
         <artifact
             location="C:\GitHub\GTI-routes\app\build\intermediates\split-apk\debug\slices\slice_1.apk"

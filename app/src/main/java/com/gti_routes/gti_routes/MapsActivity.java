@@ -7,14 +7,19 @@ import android.location.Location;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationManager;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.util.Log;
 import android.view.View;
+import android.webkit.ConsoleMessage;
+import android.webkit.JavascriptInterface;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +39,18 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONObject;
+import org.json.JSONStringer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -47,12 +64,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationListener locationListener;
     private Marker currentLocationmMarker;
     private Marker testmMarker;
-    private LatLng[] routeCoords = new LatLng[6000];
+    private ArrayList<LatLng> routeCoords = new ArrayList<LatLng>();
     public static final int REQUEST_LOCATION_CODE = 99;
     double latitude,longitude;
     private int n = 0;
     private boolean recording = false;
     public Button button = null;
+    private FirebaseDatabase mDatabase;
+    public ArrayList<ArrayList<LatLng>> RouteList = new ArrayList<>();
+
+    public static class DataG {
+        public DataG()
+        {
+        }
+
+        public ArrayList<ArrayList<LatLng>> routes;
+    }
+// ...
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,13 +91,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        RouteList = new ArrayList<ArrayList<LatLng>>();
+
         button = findViewById(R.id.button_start_record);
         button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 if(recording){
                     recording = false;
                     button.setText(R.string.startRecording);
-                    routeCoords = new LatLng[6000];
+                    saveRoute(routeCoords);
+                    routeCoords.clear();
                     n = 0;
                 }else if(!recording){
                     recording = true;
@@ -76,6 +108,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
+        mDatabase = FirebaseDatabase.getInstance();
+        mDatabase.getReference().addValueEventListener(postListener);
     }
 
     @Override
@@ -171,6 +205,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //mMap.animateCamera(CameraUpdateFactory.zoomBy(10));
 
             if(recording){
+
                 drawLine(routeCoords);
             }
 
@@ -191,21 +226,58 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public void drawLine(LatLng[] route){
+    public void drawLine(ArrayList<LatLng> route){
         if (n >= 1) {
             //routeCoords = https://roads.googleapis.com/v1/snapToRoads?path=-35.27801,149.12958|-35.28032,149.12907|-35.28099,149.12929|-35.28144,149.12984|-35.28194,149.13003|-35.28282,149.12956|-35.28302,149.12881|-35.28473,149.12836&interpolate=true&key=YOUR_API_KEY
             //Polyline line = mMap.addPolyline(new PolylineOptions().addAll(routeCoords.).width(5).color(Color.RED));
             for (int i = 0; i < n - 1; i++) {
                 Polyline line = mMap.addPolyline(new PolylineOptions()
-                        .add(route[i], route[i + 1])
+                        .add(route.get(i), route.get(i + 1))
                         .width(5)
                         .color(Color.RED));
             }
         }
     }
 
-    public void saveRoute(LatLng[] route){
-        
+    ValueEventListener postListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            // Get Post object and use the values to update the UI
+            DataG data = dataSnapshot.getValue(DataG.class);
+          //  Log.v("lol", data.toString());
+//            RouteList = dataSnapshot.getValue();
+
+            Log.v("sams", RouteList.toString());
+
+            for (ArrayList<LatLng> x : RouteList)
+            {
+                drawLine(x);
+            }
+            // ...
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            // Getting Post failed, log a message
+            Log.w("SAM", "loadPost:onCancelled", databaseError.toException());
+            // ...
+        }
+    };
+
+    public void saveRoute(ArrayList<LatLng> route){
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("Data");
+
+        Log.v("sam", route.toString());
+
+        DataG d = new DataG();
+
+        RouteList.add(route);
+        d.routes = RouteList;
+
+        ref.setValue(d);
     }
 
     public boolean checkLocationPermission() {
@@ -234,7 +306,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         markerOptions.visible(true);
 
-        routeCoords[n] = newPin;
+        routeCoords.add(newPin);
         n++;
     }
     @Override

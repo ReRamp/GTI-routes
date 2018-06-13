@@ -8,8 +8,8 @@
     android:verticalSpacing="10dp"
     android:stretchMode="columnWidth"
     android:orientation="vertical"
-    android:background="@drawable/plad"
-    android:padding="30dp">
+    android:padding="30dp"
+    android:background="#CC1020">
 
     <TextView
         android:layout_width="match_parent"

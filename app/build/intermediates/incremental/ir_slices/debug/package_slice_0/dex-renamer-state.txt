@@ -1,4 +1,4 @@
-#Tue Jun 12 18:52:14 PDT 2018
-base.0=C\:\\GitHub\\GTI-routes\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\102
+#Wed Jun 13 00:08:20 PDT 2018
+base.0=C\:\\GitHub\\GTI-routes\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
 path.0=classes.dex
 renamed.0=classes.dex
