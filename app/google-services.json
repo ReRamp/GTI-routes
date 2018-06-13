@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "374257750033",
+    "firebase_url": "https://gti-routes.firebaseio.com",
+    "project_id": "gti-routes",
+    "storage_bucket": "gti-routes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:374257750033:android:87141a1a605dbf9d",
+        "android_client_info": {
+          "package_name": "com.gti_routes.gti_routes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "374257750033-5i049avfmcotrrnmuid5si73j7g392bm.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "374257750033-5i049avfmcotrrnmuid5si73j7g392bm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDV5wnUQBbLb3ePvVLVo1idDoGua4ZuIPo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
