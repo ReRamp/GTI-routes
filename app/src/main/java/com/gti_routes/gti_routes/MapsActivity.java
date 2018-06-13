@@ -68,6 +68,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if(recording){
                     recording = false;
                     button.setText(R.string.startRecording);
+                    routeCoords = new LatLng[6000];
+                    n = 0;
                 }else if(!recording){
                     recording = true;
                     button.setText(R.string.stopRecording);
@@ -75,17 +77,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
-
-    public void onClickBtn(){
-        if(recording){
-            recording = false;
-            button.setText(R.string.startRecording);
-        }else if(!recording){
-            recording = true;
-            button.setText(R.string.startRecording);
-        }
-    }
-    
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -133,7 +124,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.d("aidan", "Client is connected");
             LocationServices.FusedLocationApi.requestLocationUpdates(client, locationRequest, this);
         }
-        testMarker();
+        //testMarker();
 
     }
 
@@ -163,36 +154,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         latitude = location.getLatitude();
         longitude = location.getLongitude();
         lastlocation = location;
-        if(currentLocationmMarker != null)
-        {
-            dropPin(currentLocationmMarker.getPosition());
-            currentLocationmMarker.remove();
-        }
-        Log.d("lat = ",""+latitude);
-        LatLng latLng = new LatLng(location.getLatitude() , location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Current Location");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-        markerOptions.visible(false);
-        currentLocationmMarker = mMap.addMarker(markerOptions);
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        //mMap.animateCamera(CameraUpdateFactory.zoomBy(10));
-
-        if(n>=1) {
-            //routeCoords = https://roads.googleapis.com/v1/snapToRoads?path=-35.27801,149.12958|-35.28032,149.12907|-35.28099,149.12929|-35.28144,149.12984|-35.28194,149.13003|-35.28282,149.12956|-35.28302,149.12881|-35.28473,149.12836&interpolate=true&key=YOUR_API_KEY
-            for(int i = 0; i<n-1; i++){
-                Polyline line = mMap.addPolyline(new PolylineOptions()
-                        .add(routeCoords[i], routeCoords[i+1])
-                        .width(5)
-                        .color(Color.RED));
+        if(recording) {
+            if (currentLocationmMarker != null) {
+                dropPin(currentLocationmMarker.getPosition());
+                currentLocationmMarker.remove();
             }
+            Log.d("lat = ", "" + latitude);
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(latLng);
+            markerOptions.title("Current Location");
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+            markerOptions.visible(false);
+            currentLocationmMarker = mMap.addMarker(markerOptions);
+            //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            //mMap.animateCamera(CameraUpdateFactory.zoomBy(10));
+
+            if(recording){
+                drawLine(routeCoords);
+            }
+
         }
-        /*if(client != null)
-        {
-            LocationServices.getFusedLocationProviderClient()
-            LocationServices.FusedLocationApi.removeLocationUpdates(client,this);
-        }*/
     }
 
     @Override
@@ -200,13 +182,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationRequest = new LocationRequest();
 
         locationRequest.setInterval(1000);
-        locationRequest.setFastestInterval(1000);
+        //locationRequest.setFastestInterval(1000);
         locationRequest.setPriority(locationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             LocationServices.FusedLocationApi.requestLocationUpdates(client,locationRequest,this);
             //LocationServices.getFusedLocationProviderClient();
         }
+    }
+
+    public void drawLine(LatLng[] route){
+        if (n >= 1) {
+            //routeCoords = https://roads.googleapis.com/v1/snapToRoads?path=-35.27801,149.12958|-35.28032,149.12907|-35.28099,149.12929|-35.28144,149.12984|-35.28194,149.13003|-35.28282,149.12956|-35.28302,149.12881|-35.28473,149.12836&interpolate=true&key=YOUR_API_KEY
+            //Polyline line = mMap.addPolyline(new PolylineOptions().addAll(routeCoords.).width(5).color(Color.RED));
+            for (int i = 0; i < n - 1; i++) {
+                Polyline line = mMap.addPolyline(new PolylineOptions()
+                        .add(route[i], route[i + 1])
+                        .width(5)
+                        .color(Color.RED));
+            }
+        }
+    }
+
+    public void saveRoute(LatLng[] route){
+        
     }
 
     public boolean checkLocationPermission() {

@@ -5,38 +5,33 @@
     build-mode="COLD"
     density="420dpi"
     format="10"
+    ir-eligibility="METHOD_ADDED"
     plugin-version="3.1.2"
-    timestamp="1528856883856"
+    timestamp="1528859555952"
     token="-5951577971784060377"
     verifier="COLD_SWAP_REQUESTED" >
 
     <task
         name="javac"
-        duration="0" />
+        duration="1200" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="0" />
+        duration="78" />
     <task
         name="verifier"
-        duration="0" />
+        duration="40" />
 
     <artifact
-        location="C:\GitHub\GTI-routes\app\build\intermediates\resources\instant-run\debug\resources-debug.apk"
+        location="C:\GitHub\GTI-routes\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
         type="SPLIT" />
 
     <build
         build-mode="FULL"
-        timestamp="1528856513516"
+        timestamp="1528859042004"
         verifier="FULL_BUILD_REQUESTED" >
-        <artifact
-            location="C:\GitHub\GTI-routes\app\build\intermediates\resources\instant-run\debug\resources-debug.apk"
-            type="SPLIT" />
-        <artifact
-            location="C:\GitHub\GTI-routes\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
-            type="SPLIT" />
         <artifact
             location="C:\GitHub\GTI-routes\app\build\intermediates\split-apk\debug\slices\slice_3.apk"
             type="SPLIT" />
@@ -68,24 +63,22 @@
             location="C:\GitHub\GTI-routes\app\build\intermediates\split-apk\debug\slices\slice_0.apk"
             type="SPLIT" />
         <artifact
+            location="C:\GitHub\GTI-routes\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\GitHub\GTI-routes\app\build\intermediates\resources\instant-run\debug\resources-debug.apk"
+            type="SPLIT" />
+        <artifact
             location="C:\GitHub\GTI-routes\app\build\intermediates\instant-run-apk\debug\app-debug.apk"
             type="SPLIT_MAIN" />
     </build>
     <build
         build-mode="COLD"
-        ir-eligibility="COMPATIBLE"
-        timestamp="1528856709726"
+        ir-eligibility="METHOD_ADDED"
+        timestamp="1528859555952"
         verifier="COLD_SWAP_REQUESTED" >
         <artifact
             location="C:\GitHub\GTI-routes\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
-            type="SPLIT" />
-    </build>
-    <build
-        build-mode="COLD"
-        timestamp="1528856883856"
-        verifier="COLD_SWAP_REQUESTED" >
-        <artifact
-            location="C:\GitHub\GTI-routes\app\build\intermediates\resources\instant-run\debug\resources-debug.apk"
             type="SPLIT" />
     </build>
 
